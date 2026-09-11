@@ -1,0 +1,23 @@
+# Java & Backend
+
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# IDE
+
+bin/ 
+tmp/
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+.idea_modules/
+.DS_Store
+
+
+# Frontend 
+
