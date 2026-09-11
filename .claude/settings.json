@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'REMINDER: If this change was substantive (requirements, code behavior, tests, analysis influenced by AI), add an entry to AI_USAGE.md per the assignment requirements.'"
+          }
+        ]
+      }
+    ]
+  }
+}
