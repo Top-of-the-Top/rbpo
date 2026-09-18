@@ -20,25 +20,32 @@ Do NOT log: typos, formatting, single-term translation, short autocomplete, refe
 
 Every entry must contain:
 
-- **Участник**: M1, M2, or M3 (ask the user if not provided)
+- **Участник**: `M3`, `A100`, or `E95` (the team's actual codes, from `PROJECT.md`; ask the user if not provided)
 - **Задача**: what problem was being solved
 - **Использование ИИ**: how AI was used
 - **В проект вошло**: what actually went into the project (be precise — "переработанная версия" not just "сгенерировано")
 - **Проверка человеком**: what the human actually verified (only what was really done — do not invent tests)
 - **Связанный результат**: file, SR-*, T-*, D-*, commit, PR, or test
 
-Do NOT include full names, group numbers, or personal emails. Use M1–M3 codes only.
+Do NOT include full names, group numbers, or personal emails. Use the `M3`/`A100`/`E95` codes only.
+
+## Infrastructure section stays separate
+
+`AI_USAGE.md` has a one-time "Инфраструктура ИИ" section (tool, `CLAUDE.md` context,
+skills, hooks) that is declared once, not per task — do not duplicate it or fold it
+into a task entry. Only touch it if the actual tooling changes (new skill added/removed,
+hook changed); otherwise leave it as is.
 
 ## How to write
 
 1. Read the current AI_USAGE.md first.
-2. If it still has the short declaration ("Существенное использование... отсутствует"), replace it with the first entry.
+2. If it still has the short declaration ("Существенное использование... отсутствует"), replace it with the first entry, but keep the "Инфраструктура ИИ" section if present.
 3. If related entries exist for the same task, update them rather than adding duplicates.
 4. Keep entries concise. No need for full prompts, responses, or screenshots.
 
 ## Workflow
 
-1. Ask the user which participant (M1/M2/M3) is responsible.
+1. Ask the user which participant (`M3`/`A100`/`E95`) is responsible.
 2. Ask what task was solved and how AI was used.
 3. Confirm what actually went into the project.
 4. Confirm what human verification was actually performed.
