@@ -1,0 +1,14 @@
+services:
+  backend:
+    build: ./backend
+    container_name: vedu_backend
+    restart: always
+    ports: 
+      - "8080:8080"
+    networks:
+      - vedu_network
+
+
+networks:
+  vedu_network:
+    driver: bridge
