@@ -38,6 +38,31 @@ public class User {
   @Column(name = "updated_at", nullable = false)
   private Instant updatedAt;
 
+  protected User() {
+  }
+
+  public User(String username, String encryptedEmail, String passwordHash) {
+    this.username = username;
+    this.encryptedEmail = encryptedEmail;
+    this.passwordHash = passwordHash;
+  }
+
+  public UUID getId() {
+    return id;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public String getEncryptedEmail() {
+    return encryptedEmail;
+  }
+
+  public String getPasswordHash() {
+    return passwordHash;
+  }
+
   @PrePersist
   void onCreate() {
     createdAt = updatedAt = Instant.now();
