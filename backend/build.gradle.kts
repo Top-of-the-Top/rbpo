@@ -20,6 +20,7 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.0")
 	implementation("org.springframework.security:spring-security-crypto")
 	implementation("org.springframework.boot:spring-boot-starter-webmvc")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")

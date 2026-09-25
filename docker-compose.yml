@@ -1,7 +1,7 @@
 services:
   backend:
     build: ./backend
-    container_name: vedu_backend
+    container_name: vedu-api
     restart: always
     env_file: .env
     depends_on:
@@ -18,7 +18,7 @@ services:
   postgres:
     image: postgres:17-alpine
     restart: always
-    container_name: postgres_db
+    container_name: vedu-postgres
     command: ["postgres", "-p", "${POSTGRES_PORT}"]
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
@@ -38,7 +38,7 @@ services:
   redis:
     image: redis:8-alpine
     restart: always
-    container_name: redis_db
+    container_name: vedu-redis
     command: >
       redis-server
       --port ${REDIS_PORT}

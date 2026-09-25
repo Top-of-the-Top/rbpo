@@ -22,6 +22,7 @@ import ru.veduteam.vedu.auth.application.dto.TokenPair;
 import ru.veduteam.vedu.auth.domain.errors.InvalidCredentialsException;
 import ru.veduteam.vedu.auth.domain.errors.InvalidRefreshTokenException;
 import ru.veduteam.vedu.auth.domain.errors.UsernameTakenException;
+import ru.veduteam.vedu.auth.infrastructure.http.AuthController;
 
 @WebMvcTest(AuthController.class)
 class AuthControllerTest {
