@@ -9,6 +9,11 @@ spring:
 
   jpa:
     open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+  flyway:
+    sql-migration-suffixes: .pgsql
 
   data:
     redis:
