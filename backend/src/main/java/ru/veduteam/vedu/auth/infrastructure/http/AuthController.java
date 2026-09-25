@@ -1,4 +1,4 @@
-package ru.veduteam.vedu.auth.infrastructure;
+package ru.veduteam.vedu.auth.infrastructure.http;
 
 import jakarta.validation.Valid;
 

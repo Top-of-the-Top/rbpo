@@ -1,4 +1,4 @@
-package ru.veduteam.vedu.auth.infrastructure;
+package ru.veduteam.vedu.auth.infrastructure.errors;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -10,6 +10,7 @@ import ru.veduteam.vedu.auth.domain.errors.EmailTakenException;
 import ru.veduteam.vedu.auth.domain.errors.InvalidCredentialsException;
 import ru.veduteam.vedu.auth.domain.errors.InvalidRefreshTokenException;
 import ru.veduteam.vedu.auth.domain.errors.UsernameTakenException;
+import ru.veduteam.vedu.auth.infrastructure.http.AuthController;
 
 @RestControllerAdvice(assignableTypes = AuthController.class)
 public class AuthExceptionHandler {
