@@ -1,4 +1,4 @@
-package ru.veduteam.vedu.domain;
+package ru.veduteam.vedu.user.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
