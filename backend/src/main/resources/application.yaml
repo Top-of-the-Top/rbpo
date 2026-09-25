@@ -20,3 +20,15 @@ spring:
       host: ${REDIS_HOST}
       port: ${REDIS_PORT}
       password: ${REDIS_PASSWORD}
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-token:
+    expiration: 900000
+  refresh-token:
+    expiration: 1209600000
+
+crypto:
+  email:
+    encryption-key: ${EMAIL_ENCRYPTION_KEY}
+    iv-key: ${EMAIL_IV_KEY}
