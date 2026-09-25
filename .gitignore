@@ -17,6 +17,7 @@ build/
 bin/ 
 tmp/
 .idea/
+*.vscode
 *.iml
 *.ipr
 *.iws
