@@ -15,10 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import ru.veduteam.vedu.auth.application.AuthService;
 import ru.veduteam.vedu.auth.application.dto.LoginRequest;
 import ru.veduteam.vedu.auth.application.dto.RegisterRequest;
 import ru.veduteam.vedu.auth.application.dto.TokenPair;
+import ru.veduteam.vedu.auth.application.services.AuthService;
 import ru.veduteam.vedu.auth.domain.errors.InvalidCredentialsException;
 import ru.veduteam.vedu.auth.domain.errors.InvalidRefreshTokenException;
 import ru.veduteam.vedu.auth.domain.errors.UsernameTakenException;
