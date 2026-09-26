@@ -1,40 +1,25 @@
 plugins {
-	java
-	id("org.springframework.boot") version "4.1.1"
-	id("io.spring.dependency-management") version "1.1.7"
+	id("org.springframework.boot") version "4.1.1" apply false
+	id("io.spring.dependency-management") version "1.1.7" apply false
 }
 
-group = "ru.veduteam"
-version = "0.0.1-SNAPSHOT"
+subprojects {
+	group = "ru.veduteam"
+	version = "0.0.1-SNAPSHOT"
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(25)
+	repositories {
+		mavenCentral()
 	}
-}
 
-repositories {
-	mavenCentral()
-}
+	plugins.withType<JavaPlugin> {
+		extensions.configure<JavaPluginExtension> {
+			toolchain {
+				languageVersion = JavaLanguageVersion.of(25)
+			}
+		}
+	}
 
-dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-validation")
-	implementation("io.jsonwebtoken:jjwt-api:0.12.6")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.0")
-	implementation("org.springframework.security:spring-security-crypto")
-	implementation("org.springframework.boot:spring-boot-starter-webmvc")
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-data-redis")
-	implementation("org.springframework.boot:spring-boot-starter-flyway")
-	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
-	runtimeOnly("org.flywaydb:flyway-database-postgresql")
-	runtimeOnly("org.postgresql:postgresql")
-	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
-	testImplementation("org.springframework.boot:spring-boot-starter-validation-test")
-	testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-tasks.withType<Test> {
-	useJUnitPlatform()
+	tasks.withType<Test> {
+		useJUnitPlatform()
+	}
 }

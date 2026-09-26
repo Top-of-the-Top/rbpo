@@ -1,6 +1,9 @@
 services:
-  backend:
-    build: ./backend
+  api:
+    build:
+      context: ./backend
+      args:
+        MODULE: api
     container_name: vedu-api
     restart: always
     env_file: .env
@@ -13,6 +16,24 @@ services:
       - "8080:8080"
     networks:
       - vedu_network
+      - vedu_internal
+
+  worker:
+    build:
+      context: ./backend
+      args:
+        MODULE: worker
+    container_name: vedu-worker
+    restart: always
+    # Only what the worker uses — not the whole .env with JWT and encryption keys.
+    environment:
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
       - vedu_internal
 
   postgres:

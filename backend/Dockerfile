@@ -1,23 +1,28 @@
 # syntax=docker/dockerfile:1
 
+# One Dockerfile for both components; pick the Gradle module with --build-arg MODULE=api|worker.
+
 FROM eclipse-temurin:25-jdk AS build
+ARG MODULE
 WORKDIR /app
 
 COPY gradlew ./
 COPY gradle ./gradle
 COPY build.gradle.kts settings.gradle.kts ./
-RUN ./gradlew --no-daemon dependencies || true
+COPY api/build.gradle.kts ./api/
+COPY worker/build.gradle.kts ./worker/
+RUN ./gradlew --no-daemon :${MODULE}:dependencies || true
 
-COPY src ./src
-RUN ./gradlew --no-daemon bootJar
+COPY ${MODULE}/src ./${MODULE}/src
+RUN ./gradlew --no-daemon :${MODULE}:bootJar
 
 FROM eclipse-temurin:25-jre
+ARG MODULE
 WORKDIR /app
 
 RUN useradd --system --create-home appuser
 USER appuser
 
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=build /app/${MODULE}/build/libs/${MODULE}-*.jar app.jar
 
-EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
