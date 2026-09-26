@@ -14,10 +14,10 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import ru.veduteam.vedu.auth.application.Encrypter;
 import ru.veduteam.vedu.auth.application.errors.DecryptionException;
 import ru.veduteam.vedu.auth.application.errors.EncryptionException;
 import ru.veduteam.vedu.auth.application.errors.InvalidEncryptionKeyException;
+import ru.veduteam.vedu.auth.application.ports.Encrypter;
 
 @Component
 public class SivEncrypter implements Encrypter {

@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import ru.veduteam.vedu.auth.application.AuthService;
 import ru.veduteam.vedu.auth.application.dto.LoginRequest;
 import ru.veduteam.vedu.auth.application.dto.RefreshTokenRequest;
 import ru.veduteam.vedu.auth.application.dto.RegisterRequest;
 import ru.veduteam.vedu.auth.application.dto.TokenPair;
+import ru.veduteam.vedu.auth.application.services.AuthService;
 
 @RestController
 @RequestMapping("/api/auth")

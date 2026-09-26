@@ -1,4 +1,4 @@
-package ru.veduteam.vedu.auth.application;
+package ru.veduteam.vedu.auth.application.dto;
 
 import java.util.UUID;
 

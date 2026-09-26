@@ -1,4 +1,4 @@
-package ru.veduteam.vedu.auth.application;
+package ru.veduteam.vedu.auth.application.ports;
 
 public interface PasswordHasher {
   String hash(String rawPassword);

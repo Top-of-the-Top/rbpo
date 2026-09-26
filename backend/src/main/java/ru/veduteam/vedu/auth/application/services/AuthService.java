@@ -1,4 +1,4 @@
-package ru.veduteam.vedu.auth.application;
+package ru.veduteam.vedu.auth.application.services;
 
 import java.util.Locale;
 import java.util.UUID;
@@ -7,9 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ru.veduteam.vedu.auth.application.dto.LoginRequest;
+import ru.veduteam.vedu.auth.application.dto.RefreshTokenClaims;
 import ru.veduteam.vedu.auth.application.dto.RefreshTokenRequest;
 import ru.veduteam.vedu.auth.application.dto.RegisterRequest;
 import ru.veduteam.vedu.auth.application.dto.TokenPair;
+import ru.veduteam.vedu.auth.application.dto.UserDetails;
+import ru.veduteam.vedu.auth.application.ports.Encrypter;
+import ru.veduteam.vedu.auth.application.ports.PasswordHasher;
+import ru.veduteam.vedu.auth.application.ports.RefreshTokenStore;
 import ru.veduteam.vedu.auth.domain.errors.EmailTakenException;
 import ru.veduteam.vedu.auth.domain.errors.InvalidCredentialsException;
 import ru.veduteam.vedu.auth.domain.errors.InvalidRefreshTokenException;

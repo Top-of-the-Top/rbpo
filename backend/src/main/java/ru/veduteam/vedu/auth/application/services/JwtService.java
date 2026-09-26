@@ -1,4 +1,4 @@
-package ru.veduteam.vedu.auth.application;
+package ru.veduteam.vedu.auth.application.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -17,6 +17,8 @@ import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import ru.veduteam.vedu.auth.application.dto.RefreshTokenClaims;
+import ru.veduteam.vedu.auth.application.dto.UserDetails;
 import ru.veduteam.vedu.auth.domain.errors.InvalidRefreshTokenException;
 
 @Service

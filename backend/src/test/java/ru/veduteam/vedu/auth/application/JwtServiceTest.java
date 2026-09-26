@@ -11,6 +11,9 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import ru.veduteam.vedu.auth.application.dto.RefreshTokenClaims;
+import ru.veduteam.vedu.auth.application.dto.UserDetails;
+import ru.veduteam.vedu.auth.application.services.JwtService;
 import ru.veduteam.vedu.auth.domain.errors.InvalidRefreshTokenException;
 
 class JwtServiceTest {

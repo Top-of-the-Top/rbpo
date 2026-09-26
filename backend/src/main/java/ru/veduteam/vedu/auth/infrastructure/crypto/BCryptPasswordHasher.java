@@ -5,7 +5,7 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import ru.veduteam.vedu.auth.application.PasswordHasher;
+import ru.veduteam.vedu.auth.application.ports.PasswordHasher;
 
 @Component
 public class BCryptPasswordHasher implements PasswordHasher {

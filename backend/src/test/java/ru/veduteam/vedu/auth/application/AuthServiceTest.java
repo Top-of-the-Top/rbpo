@@ -24,9 +24,16 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import ru.veduteam.vedu.auth.application.dto.LoginRequest;
+import ru.veduteam.vedu.auth.application.dto.RefreshTokenClaims;
 import ru.veduteam.vedu.auth.application.dto.RefreshTokenRequest;
 import ru.veduteam.vedu.auth.application.dto.RegisterRequest;
 import ru.veduteam.vedu.auth.application.dto.TokenPair;
+import ru.veduteam.vedu.auth.application.dto.UserDetails;
+import ru.veduteam.vedu.auth.application.ports.Encrypter;
+import ru.veduteam.vedu.auth.application.ports.PasswordHasher;
+import ru.veduteam.vedu.auth.application.ports.RefreshTokenStore;
+import ru.veduteam.vedu.auth.application.services.AuthService;
+import ru.veduteam.vedu.auth.application.services.JwtService;
 import ru.veduteam.vedu.auth.domain.errors.EmailTakenException;
 import ru.veduteam.vedu.auth.domain.errors.InvalidCredentialsException;
 import ru.veduteam.vedu.auth.domain.errors.InvalidRefreshTokenException;

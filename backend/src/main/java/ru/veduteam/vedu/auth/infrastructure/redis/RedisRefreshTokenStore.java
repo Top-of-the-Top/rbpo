@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
-import ru.veduteam.vedu.auth.application.RefreshTokenStore;
+import ru.veduteam.vedu.auth.application.ports.RefreshTokenStore;
 
 @Component
 public class RedisRefreshTokenStore implements RefreshTokenStore {
