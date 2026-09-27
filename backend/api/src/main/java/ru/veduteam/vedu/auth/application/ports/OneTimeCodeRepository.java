@@ -6,6 +6,6 @@ import java.util.UUID;
 public interface OneTimeCodeRepository {
   public void save(String code, UUID userId, Duration ttl);
 
-  public void consume(String code, UUID userId);
+  public boolean verify(String code, UUID userId);
 
 }
