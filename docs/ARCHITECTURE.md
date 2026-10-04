@@ -10,20 +10,20 @@ Source of truth for *where things live*. Product rules: PROJECT.md. Conventions:
 | `vedu-worker` | `backend/` (arg `MODULE=worker`) | — | `vedu_internal` | redis (+ broker) | Redis vars only |
 | `vedu-postgres` | `postgres:17-alpine`, volume `pgdata` | `${POSTGRES_PORT}` | `vedu_internal` | — | DB creds |
 | `vedu-redis` | `redis:8-alpine`, volume `redisdata`, password required | `${REDIS_PORT}` | `vedu_internal` | — | Redis password |
+| `vedu-rabbitmq` | `rabbitmq:4-management-alpine`, volume `rabbitmqdata` | `${RABBITMQ_PORT}` | `vedu_internal` | — | RabbitMQ user/password |
 
-`vedu_internal` is `internal: true` — no outbound internet; only `vedu-api` is reachable from outside. RabbitMQ is used by the code (`spring-boot-starter-amqp`) but is not yet in compose — add it there when the worker consumes.
+`vedu_internal` is `internal: true` — no outbound internet; only `vedu-api` is reachable from outside. RabbitMQ has no published ports; api publishes to topic exchange `vedu.events` (queue `vedu.email`, binding `email.#`); the consumer in worker is not implemented yet.
 
 Store roles: **Postgres** = users, teams, tasks, comments, attachment metadata (Flyway migrations in `backend/api/src/main/resources/db`, `ddl-auto: validate`). **Redis** = one-time codes (TTL 300s, 5 attempts), refresh tokens. **Broker** = async notifications (mail with OTP) api → worker. **Files** = attachment storage TBD (access only via server after membership check).
 
 ## Backend modules (`backend/`)
 
-Gradle multi-module (`settings.gradle.kts`): `api`, `worker`. Root package `ru.veduteam.vedu`.
+Gradle multi-module (`settings.gradle.kts`): `api`, `worker`, `shared` (library: broker client and message contract, used by both). Root package `ru.veduteam.vedu`.
 
 | Package (`api`) | Role |
 |---|---|
 | `auth/` | registration, login, OTP, JWT access/refresh, password hashing, email encryption |
 | `user/` | user aggregate + lookup |
-| `shared/broker/{api,internal}` | `BrokerClient` port + RabbitMQ implementation (internal) |
 | *(planned)* `team/`, `task/`, `comment/`, `attachment/` | per PROJECT.md §4.1 groups B–H |
 
 Each module: `domain/` → `application/{services,ports,dto,errors}` → `infrastructure/{http,errors,redis,crypto,persistence}` (inward-only dependencies; details CLAUDE.md §3).
