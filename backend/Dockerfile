@@ -11,8 +11,10 @@ COPY gradle ./gradle
 COPY build.gradle.kts settings.gradle.kts ./
 COPY api/build.gradle.kts ./api/
 COPY worker/build.gradle.kts ./worker/
+COPY shared/build.gradle.kts ./shared/
 RUN ./gradlew --no-daemon :${MODULE}:dependencies || true
 
+COPY shared/src ./shared/src
 COPY ${MODULE}/src ./${MODULE}/src
 RUN ./gradlew --no-daemon :${MODULE}:bootJar
 

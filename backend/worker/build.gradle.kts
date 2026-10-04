@@ -6,6 +6,7 @@ plugins {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	implementation(project(":shared"))
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
