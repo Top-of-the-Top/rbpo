@@ -1,6 +1,6 @@
 """Private glab helpers shared by the .claude/tools/*.py scripts (Vedu).
 
-Trimmed from cstati's _glab.py: only what issue creation needs.
+Only what issue creation and epic tooling need.
 All API calls go through `glab api`, so auth is whatever `glab auth login` set up.
 """
 from __future__ import annotations
@@ -19,7 +19,7 @@ LABELS_ENDPOINT = "projects/:id/labels?per_page=100"
 
 
 def glab(*args: str) -> str:
-    # Update banner on stdout would break JSON parsing (cstati #1688).
+    # Update banner on stdout would break JSON parsing.
     env = {**os.environ, "GLAB_CHECK_UPDATE": "false"}
     res = subprocess.run(
         ["glab", *args], capture_output=True, text=True,
@@ -48,6 +48,10 @@ def glab_post_json(endpoint: str, payload: dict[str, Any]) -> Any:
 
 def read_utf8_file(path: str | Path) -> str:
     return Path(path).read_text(encoding="utf-8-sig")
+
+
+def project_id() -> int:
+    return int(glab_json("api", "projects/:id")["id"])
 
 
 def my_username() -> str:

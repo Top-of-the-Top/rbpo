@@ -9,5 +9,4 @@ public class VeduApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(VeduApiApplication.class, args);
 	}
-
 }
