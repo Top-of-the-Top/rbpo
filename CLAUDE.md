@@ -105,7 +105,7 @@ Tools are the source of truth, not reading code and guessing. Run, read output, 
 - MR body: `Closes #NN`, what/why, how tested (commands + counts), any exception to §3.
 
 ## 7. Issue board
-- Tickets/epics live in GitLab (`SeM0nchik/rbpo`); tooling via `glab` (already authenticated). Use `.claude/tools/*.py`, not raw `glab` mutations.
+- Tickets/epics live in GitLab (`sem0nchik-group/rbpo`); tooling via `glab` (already authenticated). Use `.claude/tools/*.py`, not raw `glab` mutations.
 - Labels, one per axis: **State** `Plans|Backlog|In Work` · **Severity** `Major|Medium|Low` · **Area** `Backend|Deploy|Docs` · **Type** `Bug|Feature|Analysis|Epic`. Do not invent labels (GitLab auto-creates unknown ones). New axis value → ask, create in GitLab, add to `AXES` in `issue-create.py`.
 - Assignee mandatory (it triggers the Telegram notification).
 - Body: headings English, prose Russian (`creating-gitlab-issue`). Small teammate tickets high-level; auth-epic-style tickets detailed.
