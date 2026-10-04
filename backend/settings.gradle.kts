@@ -1,3 +1,3 @@
 rootProject.name = "vedu-backend"
 
-include("api", "worker")
+include("api", "worker", "shared")

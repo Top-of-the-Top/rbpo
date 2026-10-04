@@ -31,10 +31,11 @@ Operating guide for AI assistants and humans. Load first, for every request.
 | Path | What | Notes |
 |---|---|---|
 | `backend/` | Gradle multi-module, Java 25, Spring Boot 4.1 | `settings.gradle.kts`, wrapper `./gradlew` |
-| `backend/api/` | REST API (`vedu-api`, :8080) | Postgres (JPA + Flyway), Redis (OTP, refresh tokens), RabbitMQ publisher |
-| `backend/worker/` | Async consumer (`vedu-worker`) | Redis only; package `notifications`; no JWT/crypto secrets |
+| `backend/api/` | REST API (`vedu-api`, :8080) | Postgres (JPA + Flyway), Redis (OTP, refresh tokens), publishes to RabbitMQ via `shared` |
+| `backend/worker/` | Async consumer (`vedu-worker`) | Redis + RabbitMQ only; package `notifications`; no JWT/crypto secrets |
+| `backend/shared/` | Library used by api and worker | `ru.veduteam.vedu.shared.broker`: `BrokerClient`, message contract (`BrokerMessage`, `SendEmailMessage`), RabbitMQ topology; no business logic, not a Boot app |
 | `frontend/` | React + TypeScript + Vite | `npm` scripts in `package.json` |
-| `docker-compose.yml` | api, worker, postgres 17, redis 8 | networks: `vedu_network` (public), `vedu_internal` (internal-only) |
+| `docker-compose.yml` | api, worker, postgres 17, redis 8, rabbitmq 4 | networks: `vedu_network` (public), `vedu_internal` (internal-only) |
 | `.env` / `.env.example` | runtime config | never commit `.env`; add new keys to `.env.example` |
 | `docs/` | `ARCHITECTURE.md`, `SECURITY_REQUIREMENTS.md` | PROJECT.md at root is the product passport |
 | `.claude/` | skills, tools, hooks, commands | §9 |
@@ -61,7 +62,7 @@ backend/api/src/main/java/ru/veduteam/vedu/<module>/        # auth, user, (team,
     ├── http/           # controllers (thin: parse → service → map)
     ├── errors/         # exception → HTTP mapping (@RestControllerAdvice)
     ├── redis/ crypto/ persistence/   # per-technology adapters
-shared/                 # cross-module tech only (e.g. broker/api + broker/internal)
+backend/shared/          # separate Gradle module, tech used by api and worker (broker/api + broker/internal)
 ```
 - **DDD.** Business rules live in domain/application, never in controllers or SQL. Infrastructure implements ports; domain never imports Spring, JPA, Redis, AMQP, Jackson.
 - **Clean Architecture.** No framework/DB/broker type in application or domain signatures. Cross boundaries via ports + plain types. JPA entities are persistence models; map to domain types in the adapter.
