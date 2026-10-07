@@ -6,7 +6,7 @@ description: Use when asked to solve/take/fix a GitLab ticket by number (#NN) in
 # Ticket → merged MR
 
 ## 1. Read and bound
-- `glab issue view <iid>` (or `glab api projects/:id/issues/<iid>`). Check against CLAUDE.md §1 and PROJECT.md §4.1. Out of boundary or ambiguous → ask, stop.
+- `glab issue view <iid>` (or `glab api projects/:id/issues/<iid>`). Check against CLAUDE.md §1 and `docs/USE_CASES.md` §4.1. Out of boundary or ambiguous → ask, stop.
 - Epic child? Read the epic body for principles and dependencies.
 - Non-trivial → short plan first (what, why, how tested).
 

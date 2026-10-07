@@ -14,7 +14,7 @@ No native Epic work items on this GitLab tier. An epic is a plain Issue titled `
 ## Epic body (headings English, prose Russian)
 ```markdown
 ### Description
-What the epic is, one paragraph. Which use cases (UC-NN, PROJECT.md §4.1) and SR-* it covers.
+What the epic is, one paragraph. Which use cases (UC-NN, `docs/USE_CASES.md` §4.1) and SR-* it covers.
 
 ### Why / principles
 Why it matters + non-negotiable principles every child follows (CLAUDE.md §1 boundary, §3, §4 TDD).

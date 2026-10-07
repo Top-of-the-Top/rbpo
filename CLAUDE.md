@@ -8,8 +8,8 @@ Operating guide for AI assistants and humans. Load first, for every request.
 |---|---|
 | touch any code | §3 principles, §4 TDD, §5 tool authority |
 | find where something lives | §2 map, `docs/ARCHITECTURE.md` |
-| add behavior | PROJECT.md §4.1 (use cases), §1 boundary |
-| touch status transitions or roles | §3 domain, PROJECT.md §4.1.2 matrices |
+| add behavior | `docs/USE_CASES.md` §4.1 (use cases), §1 boundary |
+| touch status transitions or roles | §3 domain, `docs/USE_CASES.md` §4.1.2 matrices |
 | touch security-relevant code | `docs/SECURITY_REQUIREMENTS.md` (SR-*) |
 | open a branch / commit / MR | §6 git-flow |
 | file a ticket / epic / close work | §7 board, skills in §9 |
@@ -23,7 +23,7 @@ Operating guide for AI assistants and humans. Load first, for every request.
 - No sprints, epics (as a product feature), Gantt, time tracking, estimates, reports.
 - In scope beyond the core lifecycle: subtasks, recurring tasks, List view alongside Board (two views only), comments with @mentions, file attachments, real-time board updates, login + email + password with one-time code. Rework reason is a separate mandatory field, not a comment.
 - Not in scope: custom fields, task templates, guest/external access, external integrations, OAuth.
-- Use cases: PROJECT.md §4.1 — check before adding behavior.
+- Use cases: `docs/USE_CASES.md` §4.1 — check before adding behavior.
 - Roles only: author / executor / team member / team creator.
 
 ## 2. Repo map
@@ -37,7 +37,7 @@ Operating guide for AI assistants and humans. Load first, for every request.
 | `frontend/` | React + TypeScript + Vite | `npm` scripts in `package.json` |
 | `docker-compose.yml` | api, worker, postgres 17, redis 8, rabbitmq 4 | networks: `vedu_network` (public), `vedu_internal` (internal-only) |
 | `.env` / `.env.example` | runtime config | never commit `.env`; add new keys to `.env.example` |
-| `docs/` | `ARCHITECTURE.md`, `SECURITY_REQUIREMENTS.md` | PROJECT.md at root is the product passport |
+| `docs/` | `ARCHITECTURE.md`, `SECURITY_REQUIREMENTS.md`, `USE_CASES.md` | PROJECT.md at root is the product passport |
 | `.claude/` | skills, tools, hooks, commands | §9 |
 | `AI_USAGE.md` | log of substantive AI use | assignment requirement, rules §10 |
 
@@ -45,7 +45,7 @@ Operating guide for AI assistants and humans. Load first, for every request.
 
 **Domain (ubiquitous language):** Team, Membership, Task, Subtask, Status, Transition, RecurrenceRule, Comment, Mention, Attachment, User, OneTimeCode, Session. Task is the core aggregate; it guards its own invariants.
 
-**Task lifecycle (server-owned, PROJECT.md §4.1.2):**
+**Task lifecycle (server-owned, `docs/USE_CASES.md` §4.1.2):**
 `TODO → IN_PROGRESS` (executor) · `IN_PROGRESS → IN_REVIEW` (executor) · `IN_REVIEW → DONE` (author) · `IN_REVIEW → IN_PROGRESS` (author, reason required). Anything else rejected; `DONE` is terminal. Author ≠ executor. Check order: authenticated → team member → role allows → data valid → state allows. Non-members see team objects as nonexistent. Actor always comes from the session, never the request body.
 
 **Modular monolith, Clean Architecture per module.** Dependencies point inward: `infrastructure → application → domain`.
@@ -80,7 +80,7 @@ Red → Green → Refactor. Use the `superpowers:test-driven-development` skill.
 2. Minimal code to pass. Refactor with tests green.
 3. Bug fix = reproduction test first (must fail on old code), then fix.
 - Every new/changed behavior needs ≥1 happy-path test and ≥1 primary-failure test (invalid input, forbidden role, illegal transition, downstream error). One-line pass-throughs exempt.
-- **Transition rules:** table-driven test over the full role × from-status × to-status matrix (PROJECT.md §4.1.2). A new status or role means the matrix test changes first.
+- **Transition rules:** table-driven test over the full role × from-status × to-status matrix (`docs/USE_CASES.md` §4.1.2). A new status or role means the matrix test changes first.
 - Layering of tests: domain = plain JUnit (no Spring); application = JUnit + Mockito over ports; infrastructure = `@WebMvcTest` / slice tests; Testcontainers/integration only where an adapter's real behavior matters (JPA, Flyway, Redis).
 - Security-relevant behavior (SR-01…SR-09) has a negative test per requirement; mention the SR id in the test name.
 - Never delete/disable/loosen a failing test to go green. Fix the cause.
@@ -112,7 +112,7 @@ Tools are the source of truth, not reading code and guessing. Run, read output, 
 - Body: headings English, prose Russian (`creating-gitlab-issue`). Small teammate tickets high-level; auth-epic-style tickets detailed.
 - **Epics:** plain issue titled `[Epic] <name>` + `Epic` label (no native hierarchy on this tier). Children titled `<epic name>: <ticket>` and linked via `relates_to` (`structuring-epics`, `linking-epic-children`). Epic closes when `epic-status.py` says all linked children closed.
 - **Hygiene:** take → `In Work` + assignee self · MR opened → `Closes #NN`, assignee self · merged → close ticket with comment (MR link) · found already done → verify in code, close with pointer · obsolete → close with reason · side defect → new ticket · significant decision → comment on ticket (`recording-decisions`).
-- Check every ticket against §1 boundary and PROJECT.md §4.1 first; out-of-boundary = question for the user, not a ticket.
+- Check every ticket against §1 boundary and `docs/USE_CASES.md` §4.1 first; out-of-boundary = question for the user, not a ticket.
 
 ## 8. How to work
 1. **Understand before changing.** Read relevant files; ask if unclear.

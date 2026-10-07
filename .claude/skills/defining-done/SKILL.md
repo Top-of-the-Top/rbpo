@@ -9,7 +9,7 @@ Walk Universal + the ONE matching section. Close only if every applicable box ti
 
 ## Universal
 - [ ] Minimal change; no unrelated refactors.
-- [ ] Inside product boundary (CLAUDE.md §1); traces to a use case in PROJECT.md §4.1 or an SR-*.
+- [ ] Inside product boundary (CLAUDE.md §1); traces to a use case in `docs/USE_CASES.md` §4.1 or an SR-*.
 - [ ] TDD followed: failing test seen first (CLAUDE.md §4).
 - [ ] `cd backend && ./gradlew test` green for touched module(s); `./gradlew build` passes.
 - [ ] No secrets/`.env` in diff; new config keys added to `.env.example`.
@@ -26,7 +26,7 @@ Walk Universal + the ONE matching section. Close only if every applicable box ti
 - [ ] Errors mapped in the module's `@RestControllerAdvice`; no stack traces/internal ids leaked.
 
 ## Status transition / role change
-- [ ] Matrix test (role × from × to) updated first and passes; PROJECT.md §4.1.2 still matches code.
+- [ ] Matrix test (role × from × to) updated first and passes; `docs/USE_CASES.md` §4.1.2 still matches code.
 - [ ] Rework return requires a reason, stored with author.
 - [ ] Stale-state action rejected, state unchanged.
 
