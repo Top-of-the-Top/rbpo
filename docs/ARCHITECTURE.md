@@ -24,7 +24,7 @@ Gradle multi-module (`settings.gradle.kts`): `api`, `worker`, `shared` (library:
 |---|---|
 | `auth/` | registration, login, OTP, JWT access/refresh, password hashing, email encryption |
 | `user/` | user aggregate + lookup |
-| *(planned)* `team/`, `task/`, `comment/`, `attachment/` | per PROJECT.md §4.1 groups B–H |
+| *(planned)* `team/`, `task/`, `comment/`, `attachment/` | per [USE_CASES.md](USE_CASES.md) groups B–H |
 
 Each module: `domain/` → `application/{services,ports,dto,errors}` → `infrastructure/{http,errors,redis,crypto,persistence}` (inward-only dependencies; details CLAUDE.md §3).
 

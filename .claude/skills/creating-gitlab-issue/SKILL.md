@@ -9,7 +9,7 @@ description: Use when filing a new GitLab issue in the Vedu (rbpo) repo — repo
 
 Every issue has an English title, English section headings, a **Russian** body, exactly one label per axis, and a **mandatory assignee**. The assignee is what triggers the Telegram notification (GitLab issue webhook → relay → group chat), so an unassigned issue notifies nobody. Confirm title, body, labels and assignee with the user before creating: issues are visible, shared state.
 
-Check the ticket against the product boundary in CLAUDE.md and the use cases in PROJECT.md §4.1 first; a ticket for something outside the boundary is a question for the user, not an issue.
+Check the ticket against the product boundary in CLAUDE.md and the use cases in `docs/USE_CASES.md` §4.1 first; a ticket for something outside the boundary is a question for the user, not an issue.
 
 ## Steps
 
@@ -47,7 +47,7 @@ Do not invent labels: GitLab silently creates any unknown label. To add an axis 
 - [ ] Проверяемый результат (конкретное поведение или проверка)
 
 ### Notes
-Связанные тикеты (#NN), use case из PROJECT.md §4.1, ограничения.
+Связанные тикеты (#NN), use case из `docs/USE_CASES.md` §4.1, ограничения.
 ```
 
 Acceptance criteria are checkable statements, not "works correctly". Title: a short English imperative or noun phrase, no label prefixes.
