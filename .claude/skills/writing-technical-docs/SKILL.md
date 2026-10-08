@@ -29,7 +29,7 @@ A document contains facts the reader needs, in tables and diagrams, each fact in
 1. **Redundancy pass**: delete sections that restate a heading or table; merge rows describing the same thing; drop low-value items instead of keeping them as "accepted".
 2. **Consistency check** with a short script, not by eye: every ID referenced exists, every link is bidirectional.
    ```bash
-   grep -oE 'F[0-9]+' STRIDE.md | sort -u > used; grep -oE '^\| F[0-9]+' DFD.md | tr -d '| ' | sort -u > defined; comm -23 used defined
+   grep -oE 'F[0-9]+' docs/THREAT_MODEL.md | sort -u > used; grep -oE '^\| F[0-9]+' docs/THREAT_MODEL.md | tr -d '| ' | sort -u > defined; comm -23 used defined
    ```
 3. Diagrams inside follow **designing-diagrams**.
 

@@ -1,54 +1,62 @@
-# Architecture
+# Архитектура
 
-Source of truth for *where things live*. Product rules: PROJECT.md. Conventions: CLAUDE.md §3.
+Где что лежит в коде. Правила продукта: PROJECT.md. Соглашения по коду: CLAUDE.md §3.
 
-## Runtime topology (`docker-compose.yml`)
+## Окружение (`docker-compose.yml`)
 
-| Container | Image / build | Port | Networks | Talks to | Secrets it gets |
+| Контейнер | Образ / сборка | Порт | Сети | Говорит с | Секреты |
 |---|---|---|---|---|---|
-| `vedu-api` | `backend/` (arg `MODULE=api`) | 8080 | `vedu_network`, `vedu_internal` | postgres, redis, broker | whole `.env` (JWT, email crypto keys) |
-| `vedu-worker` | `backend/` (arg `MODULE=worker`) | — | `vedu_internal` | redis (+ broker) | Redis vars only |
-| `vedu-postgres` | `postgres:17-alpine`, volume `pgdata` | `${POSTGRES_PORT}` | `vedu_internal` | — | DB creds |
-| `vedu-redis` | `redis:8-alpine`, volume `redisdata`, password required | `${REDIS_PORT}` | `vedu_internal` | — | Redis password |
-| `vedu-rabbitmq` | `rabbitmq:4-management-alpine`, volume `rabbitmqdata` | `${RABBITMQ_PORT}` | `vedu_internal` | — | RabbitMQ user/password |
+| `vedu-api` | `backend/`, `MODULE=api` | 8080 | `vedu_network`, `vedu_internal` | postgres, redis, брокер | весь `.env` (JWT, ключи шифрования почты) |
+| `vedu-worker` | `backend/`, `MODULE=worker` | нет | `vedu_internal` | redis, брокер | только Redis |
+| `vedu-postgres` | `postgres:17-alpine`, том `pgdata` | `${POSTGRES_PORT}` | `vedu_internal` | нет | учётные данные БД |
+| `vedu-redis` | `redis:8-alpine`, том `redisdata`, пароль обязателен | `${REDIS_PORT}` | `vedu_internal` | нет | пароль Redis |
+| `vedu-rabbitmq` | `rabbitmq:4-management-alpine`, том `rabbitmqdata` | `${RABBITMQ_PORT}` | `vedu_internal` | нет | пользователь и пароль RabbitMQ |
 
-`vedu_internal` is `internal: true` — no outbound internet; only `vedu-api` is reachable from outside. RabbitMQ has no published ports; api publishes to topic exchange `vedu.events` (queue `vedu.email`, binding `email.#`); the consumer in worker is not implemented yet.
+`vedu_internal`: `internal: true`, выхода в интернет нет, снаружи доступен только `vedu-api`. У RabbitMQ нет опубликованных портов. `api` публикует в `vedu.events` (очередь `vedu.email`, привязка `email.#`), получатель в `worker` не реализован.
 
-Store roles: **Postgres** = users, teams, tasks, comments, attachment metadata (Flyway migrations in `backend/api/src/main/resources/db`, `ddl-auto: validate`). **Redis** = one-time codes (TTL 300s, 5 attempts), refresh tokens. **Broker** = async notifications (mail with OTP) api → worker. **Files** = attachment storage TBD (access only via server after membership check).
+Хранилища:
 
-## Backend modules (`backend/`)
+- **Postgres**: пользователи, команды, задачи, комментарии, метаданные вложений (Flyway в `backend/api/src/main/resources/db`, `ddl-auto: validate`)
+- **Redis**: одноразовые коды (TTL 300 с, 5 попыток), refresh-токены
+- **Брокер**: асинхронные письма с кодом, путь `api` → `worker`
+- **Файлы**: хранилище вложений не определено, доступ только через сервер после проверки членства
 
-Gradle multi-module (`settings.gradle.kts`): `api`, `worker`, `shared` (library: broker client and message contract, used by both). Root package `ru.veduteam.vedu`.
+## Бэкенд (`backend/`)
 
-| Package (`api`) | Role |
+Gradle, модули `api`, `worker`, `shared` (клиент брокера и контракт сообщений для обоих). Корневой пакет `ru.veduteam.vedu`.
+
+| Пакет (`api`) | Назначение |
 |---|---|
-| `auth/` | registration, login, OTP, JWT access/refresh, password hashing, email encryption |
-| `user/` | user aggregate + lookup |
-| *(planned)* `team/`, `task/`, `comment/`, `attachment/` | per [USE_CASES.md](USE_CASES.md) groups B–H |
+| `auth/` | регистрация, вход, одноразовый код, JWT access/refresh, хэш пароля, шифрование почты |
+| `user/` | агрегат пользователя, поиск |
+| `team/`, `task/`, `comment/`, `attachment/` (план) | группы B–H из [USE_CASES.md](USE_CASES.md) |
 
-Each module: `domain/` → `application/{services,ports,dto,errors}` → `infrastructure/{http,errors,redis,crypto,persistence}` (inward-only dependencies; details CLAUDE.md §3).
+Слои модуля: `domain/` → `application/{services,ports,dto,errors}` → `infrastructure/{http,errors,redis,crypto,persistence}`. Зависимости только внутрь. Подробнее: CLAUDE.md §3.
 
-`worker`: package `notifications/` — consumes broker messages, sends mail (SMTP in prod; log stub locally, PROJECT.md §9).
+`worker`: пакет `notifications/`, читает брокер, шлёт письма (SMTP в проде, локально заглушка в лог, PROJECT.md §9).
 
-### Auth flow (implemented / in progress)
-register → email verification code → login (login+password) → OTP code to email → `verify` → JWT access (15 min) + refresh (14 d, stored in Redis, rotated). Config: `application.yaml` (`jwt.*`, `otp.*`, `crypto.email.*`). Email is stored encrypted (deterministic SIV) so it can't be read from the DB; passwords are BCrypt-hashed (SR-08).
+### Аутентификация (готово / в процессе)
 
-## Where to put what
+Регистрация → код на почту → вход (логин+пароль) → код на почту → `verify` → JWT: access 15 мин, refresh 14 дней (Redis, ротация). Настройки: `application.yaml` (`jwt.*`, `otp.*`, `crypto.email.*`). Почта зашифрована (детерминированный SIV), из БД не читается. Пароли: BCrypt (SR-08).
 
-| Adding… | Goes in |
+## Куда класть новый код
+
+| Добавляете | Кладёте в |
 |---|---|
-| business rule, invariant, state machine | `<module>/domain/` |
-| use-case orchestration | `<module>/application/services/` |
-| anything the service needs from outside | interface in `application/ports/`, impl in `infrastructure/<tech>/` |
-| REST endpoint | `infrastructure/http/` controller (thin) + DTO in `application/dto/` |
-| exception → HTTP status | `infrastructure/errors/` advice |
-| DB table | new Flyway file + JPA entity in `infrastructure/persistence/` |
-| cross-module technical client | `shared/` (never business logic) |
-| config key | `application.yaml` + `.env.example` (+ compose env if worker needs it) |
-| test | mirror path under `src/test/java` (domain: plain JUnit; app: Mockito over ports; infra: slice tests) |
+| бизнес-правило, инвариант, конечный автомат | `<модуль>/domain/` |
+| сценарий использования | `<модуль>/application/services/` |
+| зависимость от внешнего | интерфейс в `application/ports/`, реализацию в `infrastructure/<tech>/` |
+| REST-эндпоинт | контроллер в `infrastructure/http/`, DTO в `application/dto/` |
+| исключение → HTTP-статус | `infrastructure/errors/` |
+| таблицу БД | Flyway-файл и JPA-сущность в `infrastructure/persistence/` |
+| клиент для нескольких модулей | `shared/` (без бизнес-логики) |
+| ключ конфигурации | `application.yaml` и `.env.example` |
+| тест | `src/test/java`: domain на JUnit, application на Mockito поверх портов, infrastructure slice-тестами |
 
-## Frontend (`frontend/`)
-React + TS + Vite. Renders board/list; **never decides permissions** — shows server hints, handles rejected moves by restoring the card (PROJECT.md §6).
+## Фронтенд (`frontend/`)
 
-## Tooling (`.claude/`)
-`skills/` procedures, `tools/` glab-based scripts (`issue-create`, `issue-note`, `epic-link`, `epic-status`, shared `_glab.py`), `hooks/guard_branch.py`, `commands/ticket.md`. See CLAUDE.md §9.
+React, TypeScript, Vite. Рисует доску и список. Права не решает: показывает подсказки сервера и откатывает карточку при отклонённом переносе (PROJECT.md §6).
+
+## Инструменты (`.claude/`)
+
+`skills/`: процедуры. `tools/`: скрипты на `glab` (`issue-create`, `issue-note`, `epic-link`, `epic-status`, общий `_glab.py`). `hooks/guard_branch.py`. `commands/ticket.md`. Подробнее: CLAUDE.md §9.
