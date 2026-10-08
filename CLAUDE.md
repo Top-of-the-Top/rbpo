@@ -37,9 +37,10 @@ Operating guide for AI assistants and humans. Load first, for every request.
 | `frontend/` | React + TypeScript + Vite | `npm` scripts in `package.json` |
 | `docker-compose.yml` | api, worker, postgres 17, redis 8, rabbitmq 4 | networks: `vedu_network` (public), `vedu_internal` (internal-only) |
 | `.env` / `.env.example` | runtime config | never commit `.env`; add new keys to `.env.example` |
-| `docs/` | `ARCHITECTURE.md`, `SECURITY_REQUIREMENTS.md`, `THREAT_MODEL.md`, `USE_CASES.md` | PROJECT.md at root is the product passport |
+| `docs/` | `ARCHITECTURE.md`, `SECURITY_REQUIREMENTS.md`, `THREAT_MODEL.md`, `USE_CASES.md`, `DESIGN_DECISIONS.md` | PROJECT.md at root is the product passport |
 | `.claude/` | skills, tools, hooks, commands | §9 |
 | `AI_USAGE.md` | log of substantive AI use | assignment requirement, rules §10 |
+| `CONTRIBUTIONS.md` | team contribution log, codes M3/A100/E95 | EK1 requirement |
 
 ## 3. Architecture & principles (required)
 
