@@ -8,7 +8,9 @@
 **Статус ранней калибровки:** `согласовано`
 
 **Требования безопасности:** [SECURITY_REQUIREMENTS.md](docs/SECURITY_REQUIREMENTS.md)  
-**Модель угроз:** [THREAT_MODEL.md](docs/THREAT_MODEL.md)
+**Модель угроз:** [THREAT_MODEL.md](docs/THREAT_MODEL.md)  
+**Проектные решения:** [DESIGN_DECISIONS.md](docs/DESIGN_DECISIONS.md)  
+**Вклад участников:** [CONTRIBUTIONS.md](CONTRIBUTIONS.md)
 
 ## 1. Назначение
 
